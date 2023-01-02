@@ -16,13 +16,28 @@ const Login = () => {
     email: "",
     password: "",
   });
-  console.log("email: ", auth.email);
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setAuth((prev) => ({
       ...prev,
       [id]: value,
     }));
+  };
+  const login = (email, password) => {
+    fetch("http://192.168.0.17:8080/users/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json()) //server에서 보내준 response를 object 형태로 변환
+      .then((result) => alert("결과: ", result)); //object로 변환한 response를 console.log에 출력
+  };
+  const handleClick = () => {
+    console.log("email: ", auth.email, "\npassword", auth.password);
+    login(auth.email, auth.password);
   };
   return (
     <LoginBody>
@@ -48,7 +63,7 @@ const Login = () => {
         </div>
 
         <div>
-          <LoginButton>로그인</LoginButton>
+          <LoginButton onClick={handleClick}>로그인</LoginButton>
         </div>
         <div>
           <SignUpButton onClick={() => navigate("/auth/signup")}>
