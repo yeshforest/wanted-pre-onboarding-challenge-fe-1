@@ -50,7 +50,7 @@ const Login = () => {
           alert(result.message);
           window.location = "/";
         } else {
-          alert(result.message);
+          alert(result.details);
         }
       });
   };

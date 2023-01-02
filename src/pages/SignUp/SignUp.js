@@ -56,7 +56,7 @@ const SignUp = () => {
           alert(result.message);
           window.location = "/auth/login";
         } else {
-          alert(result.message);
+          alert(result.details);
         }
       });
   };
