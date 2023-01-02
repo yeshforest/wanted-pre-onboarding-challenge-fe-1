@@ -24,16 +24,35 @@ const Login = () => {
       [id]: value,
     }));
   };
+  const handleToken = (email, token) => {
+    if (window.localStorage.getItem(email)) {
+      //토큰 존재한다면
+      window.location = "/";
+    }
+    window.localStorage.setItem(email, token);
+  };
   const login = (email, password) => {
     fetch("http://192.168.0.17:8080/users/login", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         email: email,
         password: password,
       }),
     })
       .then((response) => response.json()) //server에서 보내준 response를 object 형태로 변환
-      .then((result) => alert("결과: ", result)); //object로 변환한 response를 console.log에 출력
+      .then((result) => {
+        console.log("결과: ", result); //object로 변환한 response를 console.log에 출력
+        if (result.message === "성공적으로 로그인 했습니다") {
+          handleToken(email, result.token);
+          alert(result.message);
+          window.location = "/";
+        } else {
+          alert(result.message);
+        }
+      });
   };
   const handleClick = () => {
     console.log("email: ", auth.email, "\npassword", auth.password);

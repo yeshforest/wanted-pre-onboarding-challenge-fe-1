@@ -41,13 +41,24 @@ const SignUp = () => {
   const signup = (email, password) => {
     fetch("http://192.168.0.17:8080/users/create", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         email: email,
         password: password,
       }),
     })
       .then((response) => response.json()) //server에서 보내준 response를 object 형태로 변환
-      .then((result) => alert("결과: ", result)); //object로 변환한 response를 console.log에 출력
+      .then((result) => {
+        console.log("결과: ", result); //object로 변환한 response를 console.log에 출력
+        if (result.message === "계정이 성공적으로 생성되었습니다") {
+          alert(result.message);
+          window.location = "/auth/login";
+        } else {
+          alert(result.message);
+        }
+      });
   };
   const handleClick = () => {
     signup(auth.email, auth.password);
@@ -108,7 +119,12 @@ const SignUp = () => {
         </div>
 
         <div>
-          <SignUpButton onClick={handleClick}>회원가입</SignUpButton>
+          <SignUpButton
+            onClick={handleClick}
+            disabled={!(validEmail && validPW)}
+          >
+            회원가입
+          </SignUpButton>
         </div>
         <div>
           <LoginButton onClick={() => navigate("/auth/login")}>
