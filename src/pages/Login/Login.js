@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   LoginBody,
@@ -24,12 +24,12 @@ const Login = () => {
       [id]: value,
     }));
   };
-  const handleToken = (email, token) => {
-    if (window.localStorage.getItem(email)) {
+  const handleToken = (token) => {
+    if (window.localStorage.getItem("token")) {
       //토큰 존재한다면
       window.location = "/";
     }
-    window.localStorage.setItem(email, token);
+    window.localStorage.setItem("token", token);
   };
   const login = (email, password) => {
     fetch("http://192.168.0.17:8080/users/login", {
@@ -46,7 +46,7 @@ const Login = () => {
       .then((result) => {
         console.log("결과: ", result); //object로 변환한 response를 console.log에 출력
         if (result.message === "성공적으로 로그인 했습니다") {
-          handleToken(email, result.token);
+          handleToken(result.token);
           alert(result.message);
           window.location = "/";
         } else {

@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React, { useReducer } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import React, { useEffect, useReducer, useState } from "react";
 
 import Login from "./pages/Login/Login";
-import Home from "./pages/Home/Home";
+import Home, { NotLoginedHome } from "./pages/Home/Home";
 import SignUp from "./pages/SignUp/SignUp";
 
 const reducer = (state, action) => {
@@ -58,15 +58,22 @@ const dummyData = [
 
 function App() {
   const [data, dispatch] = useReducer(reducer, dummyData);
+  const isLogined = localStorage.getItem("token");
   return (
     <ToDoStateContext.Provider value={data}>
       <BrowserRouter>
         <div className="App">
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/auth/login" element={<Login />}></Route>
-            <Route path="/auth/signup" element={<SignUp />}></Route>
-          </Routes>
+          {isLogined ? (
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+            </Routes>
+          ) : (
+            <Routes>
+              <Route path="/" element={<NotLoginedHome />}></Route>
+              <Route path="/auth/login" element={<Login />}></Route>
+              <Route path="/auth/signup" element={<SignUp />}></Route>
+            </Routes>
+          )}
         </div>
       </BrowserRouter>
     </ToDoStateContext.Provider>
