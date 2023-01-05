@@ -1,8 +1,10 @@
+import ToDoItem from "../ToDoItem/ToDoItem";
+
 const ToDoList = ({ todoList }) => {
   return (
     <div>
       {todoList.map((it) => (
-        <div key={it.id}>{it.title + "\n" + it.content}</div>
+        <ToDoItem key={it.id} {...it} />
       ))}
     </div>
   );

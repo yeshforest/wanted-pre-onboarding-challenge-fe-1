@@ -1,12 +1,12 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import React, { useEffect, useReducer, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect, useReducer } from "react";
 
 import Login from "./pages/Login/Login";
 import Home, { NotLoginedHome } from "./pages/Home/Home";
+import OnEdit from "./pages/OnUpdate/OnUpdate";
 import SignUp from "./pages/SignUp/SignUp";
 
 const reducer = (state, action) => {
-  let newState = [];
   switch (action.type) {
     case "INIT": {
       return action.data;
@@ -18,47 +18,29 @@ const reducer = (state, action) => {
 
 export const ToDoStateContext = React.createContext();
 
-const dummyData = [
-  {
-    title: "happy happy camilla",
-    content: "fianlly happy1",
-    id: "nsa-iDm2FHSG1D02lnxOM",
-    createdAt: "2023-01-03T04:38:55.376Z",
-    updatedAt: "2023-01-03T04:38:55.376Z",
-  },
-  {
-    title: "happy happy subin",
-    content: "fianlly happy2",
-    id: "nsa-iDm2FHSG1D02lnweM",
-    createdAt: "2023-01-03T05:38:55.376Z",
-    updatedAt: "2023-01-03T04:38:55.376Z",
-  },
-  {
-    title: "happy happy minju",
-    content: "fianlly happy3",
-    id: "nsa-iDm2Fqweqwe1D02lnxOM",
-    createdAt: "2023-01-03T06:38:55.376Z",
-    updatedAt: "2023-01-03T04:38:55.376Z",
-  },
-  {
-    title: "happy happy sang",
-    content: "fianlly happy4",
-    id: "nsa-iDm2FfffqD02lnxOM",
-    createdAt: "2023-01-04T04:38:55.376Z",
-    updatedAt: "2023-01-03T04:38:55.376Z",
-  },
-  {
-    title: "happy happy stella",
-    content: "fianlly happy5",
-    id: "nsa-iDmqweqweG1D02lnxOM",
-    createdAt: "2023-01-05T04:38:55.376Z",
-    updatedAt: "2023-01-03T04:38:55.376Z",
-  },
-];
-
 function App() {
-  const [data, dispatch] = useReducer(reducer, dummyData);
+  const [data, dispatch] = useReducer(reducer, []);
   const isLogined = localStorage.getItem("token");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = () => {
+    fetch("http://192.168.0.17:8080/todos", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: window.localStorage.getItem("token"),
+      },
+    })
+      .then((response) => response.json()) //server에서 보내준 response를 object 형태로 변환
+      .then((result) => {
+        dispatch({
+          type: "INIT",
+          data: result.data,
+        });
+      });
+  };
   return (
     <ToDoStateContext.Provider value={data}>
       <BrowserRouter>
@@ -66,6 +48,7 @@ function App() {
           {isLogined ? (
             <Routes>
               <Route path="/" element={<Home />}></Route>
+              <Route path="/update" element={<OnEdit />}></Route>
             </Routes>
           ) : (
             <Routes>

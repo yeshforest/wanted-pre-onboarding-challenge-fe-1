@@ -1,7 +1,6 @@
 import { useContext } from "react";
-import { useEffect } from "react";
 import { ToDoStateContext } from "../../App";
-import { HomeBody } from "./styled";
+import { HomeBody, Title } from "./styled";
 import ToDoList from "../../components/ToDoList/ToDoList";
 //Home에서 토큰 삭제되었을 때 라우팅용 함수
 export const NotLoginedHome = () => {
@@ -15,8 +14,7 @@ const Home = () => {
 
   return (
     <HomeBody>
-      <h1>ToDo List</h1>
-      <p>이곳은 홈 입니다.</p>
+      <Title>ToDo List</Title>
       <ToDoList todoList={todoList} />
     </HomeBody>
   );
