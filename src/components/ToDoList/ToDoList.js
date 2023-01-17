@@ -1,12 +1,13 @@
 import ToDoItem from "../ToDoItem/ToDoItem";
+import { ToDoListWrapper } from "./styled";
 
 const ToDoList = ({ todoList }) => {
   return (
-    <div>
+    <ToDoListWrapper>
       {todoList.map((it) => (
         <ToDoItem key={it.id} {...it} />
       ))}
-    </div>
+    </ToDoListWrapper>
   );
 };
 ToDoList.defaultProps = {

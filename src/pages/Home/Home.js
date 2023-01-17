@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ToDoStateContext } from "../../App";
 import { HomeBody, Title } from "./styled";
 import ToDoList from "../../components/ToDoList/ToDoList";
+import ToDoDetail from "../../components/ToDoDetail/ToDoDetail";
 //Home에서 토큰 삭제되었을 때 라우팅용 함수
 export const NotLoginedHome = () => {
   if (!window.localStorage.getItem("token")) {
@@ -11,9 +12,11 @@ export const NotLoginedHome = () => {
 };
 const Home = () => {
   const todoList = useContext(ToDoStateContext);
-
+  const todoItem = {};
   return (
     <HomeBody>
+      <Title>Detail</Title>
+      <ToDoDetail todoItem={todoItem} />
       <Title>ToDo List</Title>
       <ToDoList todoList={todoList} />
     </HomeBody>

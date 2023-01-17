@@ -4,7 +4,6 @@ export const ItemWrapper = styled.div`
   width: 100%;
   height: 30px;
 
-  border
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 20px;
